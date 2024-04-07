@@ -3,7 +3,6 @@
 # Invoke the len function and pass it the string "Bobby"
 # Assign the return value to a variable of name_length.
 name_length = len("Bobby")
-
 # Invoke the len function and pass it the string "Hollywood"
 # Assign the return value to a variable of city_length.
 city_length = len("Hollywood")
@@ -15,7 +14,6 @@ age_as_number = int("31")
 # Invoke the str function and pass it the number 31.
 # Assign the return value to a variable of age_as_string.
 age_as_string = str(31)
-
 # CHALLENGE 
 # Invoke the str function and pass it the number 99.
 # The str function will return a string. Concatenate " problems" to the end of that string.
@@ -31,17 +29,23 @@ issues = str(99) + " problems"
 scientist = "albert einstein"
 proper_name = scientist.title()
 
-# The 'wasteful_string' below has a lot of useless whitespace
+# The 'wasteful_string' has a lot of useless whitespace
 # Invoke the correct method on wasteful_string to clear ALL whitespace (beginning and end)
 # Assign the returned string from the correct method to an 'unwasteful_string' variable
-wasteful_string = "     9:00PM     "
+wasteful_string = "            WASTEFUL!!!               "
 unwasteful_string = wasteful_string.strip()
 
-# The party_attendees string below contains a list of people attending our party
+# The party_attendees string contains a list of people attending our party
 # Use the 'in' operator to determine if "Ron" is attending the party
 # Assign the resulting Boolean to an 'is_attending' variable
-party_attendees = "Sharon, James, Ron, Blake"
+party_attendees = "Alice, Bob, Charlie, Ron, Sarah"
 is_attending = "Ron" in party_attendees
+
+# Define a 'ingredients' variable set to "tomatoes, potatoes, soup"
+# Capitalize every ingredient
+# Assign the resulting string to an 'capital_ingredients' variable
+ingredients = "tomatoes, potatoes, soup"
+captial_ingredients = ingredients.title()
 
 # Declare a cleanup function that accepts a single string input
 # The function should
@@ -66,19 +70,21 @@ print(changeList(["dog", "fish", "snake"]))
 empty = []
 
 # Create a list with a single Boolean — True — and assign it to the variable "active".
+active = [2>1]
 active = [True]
 
 # Create a list with 5 integers of your choice and assign it to the variable "favorite_numbers".
-favorite_numbers = [3, 7, 17, 29, 31]
+favorite_numbers = [1, 2, 3, 4, 5]
 
 # Create a list with 3 strings  — "red", "green", "blue" — and assign it to the variable "colors".
 colors = ["red", "green", "blue"]
 
 # Declare an is_long function that accepts a single list as an argument
 # It should return True if the list has more than 5 elements, and False otherwise
+def is_long(lst):
+    return len(lst) > 5
 
-def is_long(listArg):
-    return len(listArg) > 5
+# annie.chang@logncoding.com
 
 ##INDEX POSITIONING AND SLICING
 # The nuts list below contains 7 strings
@@ -86,33 +92,33 @@ nuts = ["Almonds", "Cashews", "Hazelnuts", "Brazil", "Macadamia", "Pecan", "Pist
 
 # Extract the "Cashews" string by indexing into the "nuts" list above
 # Assign the value to the variable below
-cashews = nuts[1]
+
 
 # Extract the "Pecan" string by negative indexing into the "nuts" list above
 # Assign the value to the variable below
-pecan = nuts[-2]
+
 
 # Extract the "Pistachio" string by indexing into the "nuts" list above
 # Assign the value to the variable below
-pistachio = nuts[-1]
+
 
 #Extract indices from 1 - 4
 #Assign the value to the variable below
-sliced_nuts = nuts[1:5]
+
 
 ##Challenge: Slicing with steps
 
 #Extract only the even indices of the "nuts" list (starting at 0)
 #Assign the value to the variable below
-even_nuts = nuts[::2]
+
 
 #Extract the indices from 1 - 4 in reverse order
 #Assign the value to the variable below
-reversed_sliced_nuts = nuts[4::-1]
+
 
 #Extract only the odd indices of the "nuts" list (starting at 1) in reverse order
 #Assign the value to the variable below
-challenge_sliced = nuts[5::-2]
+
 
 
 ##DICTIONARIES
