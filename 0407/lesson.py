@@ -88,38 +88,33 @@ def is_long(lst):
 
 ##INDEX POSITIONING AND SLICING
 # The nuts list below contains 7 strings
-nuts = ["Almonds", "Cashews", "Hazelnuts", "Brazil", "Macadamia", "Pecan", "Pistachio"]
 
 # Extract the "Cashews" string by indexing into the "nuts" list above
 # Assign the value to the variable below
 
-
 # Extract the "Pecan" string by negative indexing into the "nuts" list above
 # Assign the value to the variable below
-
 
 # Extract the "Pistachio" string by indexing into the "nuts" list above
 # Assign the value to the variable below
 
-
 #Extract indices from 1 - 4
 #Assign the value to the variable below
 
-
+nuts = ["Almonds", "Cashews", "Hazelnuts", "Brazil", "Macadamia", "Pecan", "Pistachio"]
 ##Challenge: Slicing with steps
 
 #Extract only the even indices of the "nuts" list (starting at 0)
 #Assign the value to the variable below
-
+print(nuts[::2])
 
 #Extract the indices from 1 - 4 in reverse order
 #Assign the value to the variable below
-
+print(nuts[4:0:-1])
 
 #Extract only the odd indices of the "nuts" list (starting at 1) in reverse order
 #Assign the value to the variable below
-
-
+print(nuts[5:-7:-2])
 
 ##DICTIONARIES
 # Create an empty dictionary and assign it to the variable empty.
