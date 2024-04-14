@@ -64,22 +64,25 @@ dictA = {"cow": 5, "dog": 98, "cat": 1}
 # """
 #1. ld = fd 2. ld =/= d(1-(n-1)) 3. ld =/= 0
 
-def isSandwich(n):
-    if(n == 0): False
+def isSandwich(n):    
     ld= -1
 
     while(n >= 10):
         d = n % 10
+        
         if(d == ld):
             return False
+        
         if(ld == -1):
             ld = d
             if(ld == 0):
                 return False
+        
         n //= 10
-    
+
     if(n == ld):
         return True
+    
     return False
 
 print(isSandwich(222) == False)
