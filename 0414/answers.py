@@ -11,7 +11,7 @@ def mult(a, b):
         result.append[a[i] * b[i]]
     return result
 #3.
-def nthSandwich(str):
+def isSandwich(str):
     if(len(str) < 2): return False
     sand = str[1:-1]
     return str[0] == str[-1] and (not sand or sand.find(str[0]) == -1)
