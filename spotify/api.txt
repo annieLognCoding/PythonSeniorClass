@@ -1,0 +1,4 @@
+Application name	lastfm to spotify
+API key	f16cd08c7639f56ecfdfafd183c1b621
+Shared secret	384c66a283c2fa3451be5a6cd18c8f96
+Registered to	chaec0803
