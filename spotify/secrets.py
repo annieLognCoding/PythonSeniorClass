@@ -2,8 +2,10 @@ def spotify_user_id():
     return '31bymk7hg5t4ej2hxc4m76abxcoy'
 
 def spotify_token():
-    return 'BQAXKcQaAu1DjvAghNl5RxKt-hYz70XevsgemilpOlEu8CCl0r9EFd_64-hWGk6344BBJdPOX3fSEJfZL3ovDF76nT1-Gt4iEYWW3xKg4E_A2JE9DP3rsCEgVNjtrB6hRhVIp4lbN03S1H54AnrFlGOYycwk1ejd8nu9FRmQszOIaGmxC1dm1ysKD1o9r5DFowkNYashRglxU7RWuB0b2tf-zzPrnmgp9TYhN8F-M45lRDXgJxg'
+    return 'BQC_6WyW1HI6ARIbcDCN9jzWcOxLZgX_vcJjN6novUKizLV8y4XWTvoPI2GhxRaxx60Z7ZmtKCmzWuRMTNKxvoggJTSy6FhPq0_QDUw3Ogt3F0qFGzHr3Z-dQwbSrLc--2SLrWKep1F1G5HvMZyzyCt0S50UkeDMkvEsbhaZAkeh9tcHb90mt0RF1iJ8etBZcH7V3OTC80ob0kJqkxZKPqofklqDTASPc4Z0KjUYkm8ZRnuNAoE'
 
 def last_fm_api_key():
     return 'f16cd08c7639f56ecfdfafd183c1b621'
 
+def refresh_token():
+    return 'AQCEdO8W_5vtSR3kNJBmpeNzNAE6hZGAWAWmZG6Tn4Gf_qH0_HKmY_f1ytV5L-Sncc1_ddxOlrIf8QfM_JM-JX7tSUA7EsZBvKGAr6MbuYqYZElJHl7kx8Puj-ycUjIX1N4'

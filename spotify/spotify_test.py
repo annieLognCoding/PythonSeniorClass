@@ -10,7 +10,7 @@ class lastFmSpotify:
         self.user_id = secrets.spotify_user_id()
         self.headers = {"Content-Type": 'application/json',
                         "Authorization": f"Bearer {self.token}"}
-        self.playlist_id = ''
+        self.playlist_id = '0EB4HyuAaaidTOHR6ilIZX'
         self.song_info = {}
         self.uris = []
 
@@ -33,7 +33,34 @@ class lastFmSpotify:
         print(self.uris)
         
 d = lastFmSpotify()
-d.fetch_songs_from_lastfm()
-d.get_uri_from_spotify()
+# d.fetch_songs_from_lastfm()
+# d.get_uri_from_spotify()
 # d.create_spotify_playlist()
 # d.add_songs_to_playlist()
+url = f"https://api.spotify.com/v1/me/playlists"
+response = requests.get(url, headers = d.headers)
+res = response.json()
+print(response.content)
+for item in res["items"]:
+    if item["name"] == "Last FM top 20":
+        print(item["id"])
+
+
+
+refreshToken = secrets.refresh_token()
+url = "https://accounts.spotify.com/api/token"
+
+payload = {
+    "method": 'POST',
+    "headers": {
+    'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    "body": new URLSearchParams({
+    "grant_type": 'refresh_token',
+    "refresh_token": refreshToken,
+    "client_id": clientId
+    }),
+}
+
+body = requests.get(url, payload);
+response = body.json();
