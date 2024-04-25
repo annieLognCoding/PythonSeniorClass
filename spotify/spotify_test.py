@@ -2,10 +2,11 @@ import json
 import pprint
 import requests
 import secrets
+import base64
 
 class lastFmSpotify:
     def __init__(self):
-        self.token = secrets.spotify_token()
+        self.token = secrets.get_newToken()
         self.api_key = secrets.last_fm_api_key()
         self.user_id = secrets.spotify_user_id()
         self.headers = {"Content-Type": 'application/json',
@@ -40,27 +41,10 @@ d = lastFmSpotify()
 url = f"https://api.spotify.com/v1/me/playlists"
 response = requests.get(url, headers = d.headers)
 res = response.json()
-print(response.content)
 for item in res["items"]:
     if item["name"] == "Last FM top 20":
         print(item["id"])
 
 
 
-refreshToken = secrets.refresh_token()
-url = "https://accounts.spotify.com/api/token"
 
-payload = {
-    "method": 'POST',
-    "headers": {
-    'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    "body": new URLSearchParams({
-    "grant_type": 'refresh_token',
-    "refresh_token": refreshToken,
-    "client_id": clientId
-    }),
-}
-
-body = requests.get(url, payload);
-response = body.json();
