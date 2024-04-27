@@ -47,7 +47,6 @@ class lastFmSpotify:
             print("Spotify successfully created playlist")
             res = response.json()
             self.playlist_id = res['id']
-            print(res['id'])
         else:
             print(response.content)
     

@@ -49,3 +49,5 @@ def exchange_code_for_token(code):
 
     response = requests.post(url, headers = headers, data=payload)
     return response.json()
+
+#flask run --port 8888
