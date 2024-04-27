@@ -2,9 +2,6 @@ import base64, requests
 def spotify_user_id():
     return '31bymk7hg5t4ej2hxc4m76abxcoy'
 
-def spotify_token():
-    return 'BQBu4KiqBVIXinW7hFptnSuwU6hHNLlW6Obxdkd7qztn6meK1R8JooY8IN_dxwdqsewhZT_u4m6TVm6GOUemTaZLD7Qryuu5PiHv3bnwv31C_EMqzCC7d0mM8pMUusOom0-sbrb9KLhBtV4oCeWq4AjqnOJD-gOrnGICimqvwvmq_gUcko2_P1wd3963768cAmO6kF_S6_Q0874to-5fT-md6kvVXKNHr5sKmBjLCc2YYYc5BVM'
-
 def last_fm_api_key():
     return 'f16cd08c7639f56ecfdfafd183c1b621'
 
