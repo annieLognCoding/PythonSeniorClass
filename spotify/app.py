@@ -1,13 +1,14 @@
 from flask import Flask, request, redirect, jsonify
 
 import requests
+import secrets
 import json
 import base64
 
 
 app = Flask(__name__)
 
-client_id = '886e7c52a19141c6b84e98e0d45c5ddd'
+client_id = secrets.client_id()
 client_secret = 'e38a2ec9b47d43b1ba1457f697b7e6f9'
 redirect_uri = 'http://localhost:8888/callback'
 user_id = '31bymk7hg5t4ej2hxc4m76abxcoy'

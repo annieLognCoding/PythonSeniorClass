@@ -40,11 +40,21 @@ class lastFmSpotify:
             uri = res["tracks"]["items"][0]["uri"]
             self.uris.append(uri)
         print(self.uris)
-        
+    
+    def create_spotify_playlist(self):
+        url = f"https://api.spotify.com/v1/users/{self.user_id}/playlists"
+        payload = {
+            "name": "New Playlist",
+            "description": "New playlist description",
+            "public": False
+        }
+        response = requests.post(url, headers=self.headers, data=payload)
+        print(response.text)
+
 d = lastFmSpotify()
-d.fetch_songs_from_lastfm()
-d.get_uri_from_spotify()
-# d.create_spotify_playlist()
+# d.fetch_songs_from_lastfm()
+# d.get_uri_from_spotify()
+d.create_spotify_playlist()
 # d.add_songs_to_playlist()
 # url = f"https://api.spotify.com/v1/me/playlists"
 # response = requests.get(url, headers = d.headers)
