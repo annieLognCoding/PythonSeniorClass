@@ -6,12 +6,12 @@ import base64
 
 class lastFmSpotify:
     def __init__(self):
-        self.token = secrets.spotify_token() #get_newToken()
+        self.token = secrets.get_newToken()
         self.api_key = secrets.last_fm_api_key()
         self.user_id = secrets.spotify_user_id()
         self.headers = {"Content-Type": 'application/json',
                         "Authorization": f"Bearer {self.token}"}
-        self.playlist_id = '0EB4HyuAaaidTOHR6ilIZX'
+        self.playlist_id = secrets.get_playlist_id()
         self.song_info = {}
         self.uris = []
 
@@ -44,24 +44,24 @@ class lastFmSpotify:
     def create_spotify_playlist(self):
         url = f"https://api.spotify.com/v1/users/{self.user_id}/playlists"
         payload = {
-            "name": "New Playlist",
-            "description": "New playlist description",
-            "public": False
+            "name": "Last fm Top 20 Playlist",
+            "description": "Made with my own Spotify API!",
+            "public": True
         }
-        response = requests.post(url, headers=self.headers, data=payload)
-        print(response.text)
+        response = requests.post(url, headers=self.headers, data=json.dumps(payload))
+        res = response.json()
+        print(res["id"])
+        self.playlist_id = res["id"]
+
+        
 
 d = lastFmSpotify()
-# d.fetch_songs_from_lastfm()
-# d.get_uri_from_spotify()
-d.create_spotify_playlist()
+d.fetch_songs_from_lastfm()
+d.get_uri_from_spotify()
+# d.create_spotify_playlist()
 # d.add_songs_to_playlist()
-# url = f"https://api.spotify.com/v1/me/playlists"
-# response = requests.get(url, headers = d.headers)
-# res = response.json()
-# for item in res["items"]:
-#     if item["name"] == "Last FM top 20":
-#         print(item["id"])
+
+
 
 
 

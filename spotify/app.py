@@ -9,9 +9,9 @@ import base64
 app = Flask(__name__)
 
 client_id = secrets.client_id()
-client_secret = 'e38a2ec9b47d43b1ba1457f697b7e6f9'
+client_secret = secrets.client_secret()
 redirect_uri = 'http://localhost:8888/callback'
-user_id = '31bymk7hg5t4ej2hxc4m76abxcoy'
+user_id = secrets.spotify_user_id()
 
 
 def generate_random_string(length):

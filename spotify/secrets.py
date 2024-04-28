@@ -51,3 +51,12 @@ def get_newToken():
     res = response.json()
     # Print the response text (or process it in other ways)
     return res["access_token"]
+
+def get_playlist_id():
+    url = f"https://api.spotify.com/v1/me/playlists"
+    response = requests.get(url, headers = {"Content-Type": 'application/json',
+                        "Authorization": f"Bearer {get_newToken()}"})
+    res = response.json()
+    for item in res["items"]:
+        if item["name"] == "Last fm Top 20 Playlist":
+            return item["id"]
