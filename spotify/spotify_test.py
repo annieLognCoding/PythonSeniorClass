@@ -16,8 +16,8 @@ class lastFmSpotify:
         self.uris = []
 
     def fetch_songs_from_lastfm(self):
-        params = {'limit': 20, 'api_key': self.api_key, 'format': 'json', }
-        url = f'https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&format=json'
+        params = {'limit': 20, 'api_key': self.api_key, 'format': 'json', 'method': 'chart.gettoptracks'}
+        url = f'https://ws.audioscrobbler.com/2.0/'
         response = requests.get(url, params = params)
         try:
             res = response.json()
@@ -34,8 +34,14 @@ class lastFmSpotify:
             
     def get_uri_from_spotify(self):
         for (song, artist) in self.song_info.items():
-            url=f"https://api.spotify.com/v1/search?query=track%3A{song}+artist%3A{artist}&type=track&offset=0&limit=1"
-            response = requests.get(url, headers=self.headers)
+            parameter = {
+                'query': f'track%3A{song}+artist%3A{artist}',
+                'type': 'track',
+                'offset': 0,
+                'limit': 1
+            }
+            url=f"https://api.spotify.com/v1/search"
+            response = requests.get(url, headers=self.headers, params=parameter)
             res = response.json()
             uri = res["tracks"]["items"][0]["uri"]
             self.uris.append(uri)
