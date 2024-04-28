@@ -14,6 +14,22 @@ def client_id():
 def client_secret():
     return 'e38a2ec9b47d43b1ba1457f697b7e6f9'
 
+def spotify_token():
+    id = client_id()
+    secret = client_secret()
+    url = "https://accounts.spotify.com/api/token"
+    payload = {
+            "grant_type": 'client_credentials',
+            "client_id": id,
+            "client_secret": secret
+        }
+
+    response = requests.post(url, headers={'content-type': 'application/x-www-form-urlencoded'}, data=payload)
+    res = response.json()
+    access_token = res['access_token']
+    return access_token
+
+
 def get_newToken():
     refreshToken = refresh_token()
     url = "https://accounts.spotify.com/api/token"
