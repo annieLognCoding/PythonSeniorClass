@@ -2,9 +2,6 @@ import base64, requests
 def spotify_user_id():
     return '31bymk7hg5t4ej2hxc4m76abxcoy'
 
-def spotify_token():
-    return 'BQBu4KiqBVIXinW7hFptnSuwU6hHNLlW6Obxdkd7qztn6meK1R8JooY8IN_dxwdqsewhZT_u4m6TVm6GOUemTaZLD7Qryuu5PiHv3bnwv31C_EMqzCC7d0mM8pMUusOom0-sbrb9KLhBtV4oCeWq4AjqnOJD-gOrnGICimqvwvmq_gUcko2_P1wd3963768cAmO6kF_S6_Q0874to-5fT-md6kvVXKNHr5sKmBjLCc2YYYc5BVM'
-
 def last_fm_api_key():
     return 'f16cd08c7639f56ecfdfafd183c1b621'
 
@@ -16,6 +13,22 @@ def client_id():
 
 def client_secret():
     return 'e38a2ec9b47d43b1ba1457f697b7e6f9'
+
+def spotify_token():
+    id = client_id()
+    secret = client_secret()
+    url = "https://accounts.spotify.com/api/token"
+    payload = {
+            "grant_type": 'client_credentials',
+            "client_id": id,
+            "client_secret": secret
+        }
+
+    response = requests.post(url, headers={'content-type': 'application/x-www-form-urlencoded'}, data=payload)
+    res = response.json()
+    access_token = res['access_token']
+    return access_token
+
 
 def get_newToken():
     refreshToken = refresh_token()
@@ -38,3 +51,12 @@ def get_newToken():
     res = response.json()
     # Print the response text (or process it in other ways)
     return res["access_token"]
+
+def get_playlist_id():
+    url = f"https://api.spotify.com/v1/me/playlists"
+    response = requests.get(url, headers = {"Content-Type": 'application/json',
+                        "Authorization": f"Bearer {get_newToken()}"})
+    res = response.json()
+    for item in res["items"]:
+        if item["name"] == "Last fm Top 20 Playlist":
+            return item["id"]
