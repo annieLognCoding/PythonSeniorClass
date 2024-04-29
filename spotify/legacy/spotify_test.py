@@ -58,6 +58,20 @@ class lastFmSpotify:
         res = response.json()
         print(res["id"])
         self.playlist_id = res["id"]
+    
+    def add_songs_to_playlist(self):
+        data = {
+            "uris": self.uris,
+            "position": 0
+        }
+        data = json.dumps(data)
+        url = f"https://api.spotify.com/v1/playlists/{self.playlist_id}/tracks"
+        response = requests.post(url, headers = self.headers, data = data)
+        if response.status_code == 201:
+            print("Successfully added songs to playlist")
+        else:
+            print(response.content)
+
 
         
 
@@ -65,7 +79,7 @@ d = lastFmSpotify()
 d.fetch_songs_from_lastfm()
 d.get_uri_from_spotify()
 # d.create_spotify_playlist()
-# d.add_songs_to_playlist()
+d.add_songs_to_playlist()
 
 
 
