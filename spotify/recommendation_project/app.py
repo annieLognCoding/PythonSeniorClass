@@ -113,7 +113,6 @@ def recommend_songs():
                 continue
         return features
     except Exception as e:
-        print("HI! eRROR", e)
         return redirect("/")
     
 
