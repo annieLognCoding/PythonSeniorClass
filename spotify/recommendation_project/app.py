@@ -1,5 +1,5 @@
 from flask import Flask, redirect, request, render_template
-import requests, my_secrets, base64, jsonify
+import requests, my_secrets, base64
 app = Flask(__name__)
 
 client_id = my_secrets.client_id()
