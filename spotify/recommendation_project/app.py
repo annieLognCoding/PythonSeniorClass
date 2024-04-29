@@ -102,8 +102,6 @@ def recommend_songs():
         res = response.json()
         features = {}
         for item in res["items"]:
-            print(item.keys())
-            print("\n\n\n")
             try:
                 track = item["track"]
                 id = track["id"]
