@@ -5,12 +5,12 @@ import secrets
 
 class lastFmSpotify:
     def __init__(self):
-        self.token = secrets.spotify_token()
+        self.token = secrets.get_newToken()
         self.api_key = secrets.last_fm_api_key()
         self.user_id = secrets.spotify_user_id()
         self.headers = {"Content-Type": 'application/json',
                         "Authorization": f"Bearer {self.token}"}
-        self.playlist_id = ''
+        self.playlist_id = self.get_playlist_id()
         self.song_info = {}
         self.uris = []
 
@@ -50,6 +50,14 @@ class lastFmSpotify:
         else:
             print(response.content)
     
+    def get_playlist_id(self):
+        url = f'https://api.spotify.com/v1/users/{self.user_id}/playlists'
+        response = requests.get(url, headers=self.headers)
+        res = response.json()
+        for item in res['items']:
+            if(item['name'] == 'Last FM top 20'):
+                return item['id']
+    
     def add_songs_to_playlist(self):
         data = {
             "uris": self.uris,
@@ -67,7 +75,9 @@ class lastFmSpotify:
         
 
 d = lastFmSpotify()
-d.fetch_songs_from_lastfm()
-d.get_uri_from_spotify()
-d.create_spotify_playlist()
-d.add_songs_to_playlist()
+# print(d.token)
+# d.fetch_songs_from_lastfm()
+# d.get_uri_from_spotify()
+# d.create_spotify_playlist()
+print(d.playlist_id)
+# d.add_songs_to_playlist()

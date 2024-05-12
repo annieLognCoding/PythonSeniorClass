@@ -8,10 +8,10 @@ import base64
 
 app = Flask(__name__)
 
-client_id = secrets.client_id()
-client_secret = secrets.client_secret()
+id = '886e7c52a19141c6b84e98e0d45c5ddd'
+secret = 'e38a2ec9b47d43b1ba1457f697b7e6f9'
 redirect_uri = 'http://localhost:8888/callback'
-user_id = secrets.spotify_user_id()
+user_id = '31bymk7hg5t4ej2hxc4m76abxcoy'
 
 
 def generate_random_string(length):
@@ -22,7 +22,7 @@ def generate_random_string(length):
 def login():
     state = generate_random_string(16)
     scope = 'user-read-private user-read-email playlist-modify-public'
-    auth_url = f"https://accounts.spotify.com/authorize?response_type=code&client_id={client_id}&scope={scope}&redirect_uri={redirect_uri}&state={state}"
+    auth_url = f"https://accounts.spotify.com/authorize?response_type=code&client_id={id}&scope={scope}&redirect_uri={redirect_uri}&state={state}"
     return redirect(auth_url)
 
 @app.route('/callback')
@@ -39,7 +39,7 @@ def exchange_code_for_token(code):
     url = "https://accounts.spotify.com/api/token"
     headers = {
         'content-type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + base64.b64encode(f'{client_id}:{client_secret}'.encode()).decode()
+        'Authorization': 'Basic ' + base64.b64encode(f'{id}:{secret}'.encode()).decode()
       }
     
     payload = {

@@ -6,7 +6,7 @@ def last_fm_api_key():
     return 'f16cd08c7639f56ecfdfafd183c1b621'
 
 def refresh_token():
-    return 'AQBwXjYe_lyP6KmnEUl4vvCpazKH4JapZX4hvy5dsSz5IZ7yna66W6F-U0pne66CnEiS_9GSZsIn8J5-fRoGN4SDJUuYhoro22BuAf6fAdMNHRzCsOMEBqkKhV_WC4im5W4'
+    return 'AQBfqFLVUlcx6DWFRRJsqNik6qklLTyubuOjt8HYFtQWkWxEQjIvdsyIHtaLFh6aIC3hQ87LXj1b5OzAB8arE6K2Y3OII5h41LqkvTYlL0Jn1421K7bkSY4QNiqZxgi8kOg'
 
 def client_id():
     return '886e7c52a19141c6b84e98e0d45c5ddd'
