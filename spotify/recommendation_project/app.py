@@ -1,5 +1,7 @@
-from flask import Flask, redirect, request, render_template
+from flask import Flask, redirect, request, render_template, jsonify
 import requests, my_secrets, base64
+import numpy as np
+
 app = Flask(__name__)
 
 client_id = my_secrets.client_id()
@@ -87,6 +89,73 @@ def exchange_code_for_token(code):
     response = requests.post(url, headers = headers, data=payload)
     return response.json()
 
+def analyze_features(features):
+    """ Analyze and average the audio features of the playlist. """
+    feature_keys = ['danceability', 'energy', 'valence', 'acousticness', 'tempo']
+    averages = {key: np.mean([f[key] for f in features if key in f]) for key in feature_keys}
+    return averages
+
+def derive_tags(features):
+    """ Derive more nuanced tags from audio features. """
+    tags = []
+    # Danceability
+    if features['danceability'] > 0.7:
+        tags.extend(['dance', 'electronic', 'house'])
+    elif features['danceability'] > 0.5:
+        tags.extend(['pop', 'hip-hop'])
+    
+    # Energy
+    if features['energy'] > 0.8:
+        tags.extend(['rock', 'metal', 'workout'])
+    elif features['energy'] > 0.6:
+        tags.extend(['party', 'dance'])
+    elif features['energy'] < 0.4:
+        tags.extend(['chill', 'ambient'])
+
+    # Valence
+    if features['valence'] > 0.75:
+        tags.extend(['happy', 'uplifting', 'summer'])
+    elif features['valence'] < 0.3:
+        tags.extend(['sad', 'melancholic'])
+
+    # Acousticness
+    if features['acousticness'] > 0.5:
+        tags.extend(['acoustic', 'folk', 'singer-songwriter'])
+    elif features['acousticness'] < 0.1:
+        tags.extend(['electronic', 'synth'])
+
+    # Tempo
+    if features['tempo'] > 140:
+        tags.extend(['fast-tempo', 'drum and bass'])
+    elif features['tempo'] < 100:
+        tags.extend(['slow-tempo', 'ballad'])
+
+    return list(set(tags))  # Remove duplicates if any
+
+# Example feature averages
+features = {'danceability': 0.6297, 'energy': 0.5645, 'valence': 0.4323, 'acousticness': 0.2789, 'tempo': 131.697}
+tags = derive_tags(features)
+
+print("Derived Tags:", tags)
+
+
+def get_lastfm_recommendations(tags, lastfm_api_key):
+    recommendations = []
+    for tag in tags:
+        url = f"http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag={tag}&api_key={lastfm_api_key}&format=json&limit=5"
+        response = requests.get(url)
+        top_tracks = response.json().get('tracks', {}).get('track', [])
+        for track in top_tracks:
+            song_name = track['name']
+            artist_name = track['artist']['name']
+            spotify_url = track['url']
+            recommendation = f"{song_name} - {artist_name}"
+            item = {"name": recommendation, "url": spotify_url}
+            if item not in recommendations:
+                recommendations.append({"name": recommendation, "url": spotify_url})
+    return list(recommendations)[:10]
+
+
 @app.route('/recommend', methods=["POST"])
 def recommend_songs():
     try:
@@ -100,20 +169,24 @@ def recommend_songs():
         url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
         response = requests.get(url, headers=headers)
         res = response.json()
-        features = {}
+        features = []
         for item in res["items"]:
             try:
                 track = item["track"]
-                id = track["id"]
-                url = f'https://api.spotify.com/v1/audio-features/{id}'
+                track_id = track["id"]
+                url = f'https://api.spotify.com/v1/audio-features/{track_id}'
                 response_call = requests.get(url, headers=headers)
                 res_call = response_call.json()
-                features[track["name"]] = res_call
+                features.append(res_call)
             except:
                 continue
-        return features
+        averages = analyze_features(features)
+        tags = derive_tags(averages)
+        lastfm_api_key = my_secrets.last_fm_api_key()
+        recommendations = get_lastfm_recommendations(tags, lastfm_api_key)
+        return jsonify(recommendations)
     except Exception as e:
-        return redirect("/")
+        return jsonify({"error": str(e)}), 400
     
 
 if __name__ == '__main__':

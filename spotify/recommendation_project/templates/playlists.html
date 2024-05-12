@@ -1,20 +1,71 @@
 {% extends "base.html" %}
 {% block title %}Home Page{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style>
+        .list-group-item {
+            background-color: #f8f9fa; /* Light grey background */
+            border-radius: 5px; /* Rounded borders for each item */
+            margin-bottom: 10px; /* Space between items */
+            padding: 20px; /* Padding inside each item */
+        }
+        .recommendations-list ul {
+            padding-left: 20px; /* Indent for list of recommendations */
+        }
+        .recommendations-list li {
+            margin-bottom: 5px; /* Space between recommendation items */
+            font-size: 18px; /* Larger font for readability */
+        }
+        .spotify-link {
+            text-decoration: none;
+            color: #1DB954; /* Spotify green */
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <h2>My Playlists</h2>
     <ul class="list-group">
         {% for playlist in names %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            Name: {{ playlist.name }}
-            <!-- Form to post the playlist ID -->
-            <form action="/recommend" method="POST">
-                <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
-                <button type="submit" class="btn btn-info">Get Recommendations</button>
-            </form>
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-weight: bold;">{{ playlist.name }}</span>
+                <!-- Button to trigger recommendations fetch -->
+                <button onclick="getRecommendations('{{ playlist.id }}', this)" class="btn btn-info">Get Recommendations</button>
+            </div>
+            <hr> <!-- Horizontal line separator -->
+            <!-- Placeholder for recommendations -->
+            <div id="recommendations-{{ playlist.id }}" class="recommendations-list" style="display: none;"></div>
         </li>
         {% endfor %}
     </ul>
 </div>
-<!-- Content here -->
+
+<script>
+    function getRecommendations(playlistId, element) {
+        const button = element;
+        button.disabled = true; // Disable button to prevent multiple clicks
+        fetch('/recommend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `playlist_id=${playlistId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            button.disabled = false; // Re-enable the button
+            const recommendationsDiv = document.getElementById('recommendations-' + playlistId);
+            recommendationsDiv.innerHTML = '<ul>' + data.map(item => `<li>${item.name} <a href="${item.url}" target="_blank" class="spotify-link">Listen on Spotify</a></li>`).join('') + '</ul>';
+            recommendationsDiv.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching recommendations:', error);
+            alert('Error fetching recommendations. Please try again.');
+            button.disabled = false;
+        });
+    }
+    </script>
+    
 {% endblock %}
