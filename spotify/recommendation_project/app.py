@@ -21,8 +21,8 @@ def home():
 @app.route("/" , methods=['POST'])
 def get_access():
     
-    state = generate_random_string(16);
-    scope = 'playlist-read-private playlist-read-collaborative user-read-private user-read-email';
+    state = generate_random_string(16)
+    scope = 'playlist-read-private playlist-read-collaborative user-read-private user-read-email'
 
     params = {
         'response_type': 'code',
