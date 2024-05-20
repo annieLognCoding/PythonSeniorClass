@@ -80,5 +80,28 @@ def get_playlists():
         playlists.append({'name': item['name'], 'id': item['id']})
     return playlists
 
+def get_first_playlist_tracks():
+    try:
+        global refresh_token
+        token = my_secrets.get_newToken(refresh_token)
+        headers = {
+            "Content-Type": 'application/json',
+            "Authorization": f"Bearer {token}"
+        }
+        
+        # Retrieve the user's playlists
+        playlists = get_playlists()
+        
+        # Extract the ID of the first playlist
+        first_playlist_id = playlists[0]["id"]
+
+        # Fetch the tracks from the first playlist
+        """
+            IMPLEMENT YOUR CODE HERE
+        """
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
 if __name__ == '__main__':
     app.run(debug = True, host='0.0.0.0', port=8888)
