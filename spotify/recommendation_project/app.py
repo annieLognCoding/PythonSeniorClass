@@ -132,12 +132,6 @@ def derive_tags(features):
 
     return list(set(tags))  # Remove duplicates if any
 
-# Example feature averages
-features = {'danceability': 0.6297, 'energy': 0.5645, 'valence': 0.4323, 'acousticness': 0.2789, 'tempo': 131.697}
-tags = derive_tags(features)
-
-print("Derived Tags:", tags)
-
 
 def get_lastfm_recommendations(tags, lastfm_api_key):
     recommendations = []

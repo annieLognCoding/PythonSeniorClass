@@ -17,11 +17,18 @@ def generate_random_string(length):
 @app.route("/")
 def get_access():
 
-    state = generate_random_string(16)
-    scope = 'user-read-private user-read-email'
-    url = f'https://accounts.spotify.com/authorize?response_type=code&client_id={client_id}&scope={scope}&redirect_uri={redirect_uri}&state={state}'
+  state = generate_random_string(16)
+  scope = 'playlist-read-private playlist-read-collaborative user-read-private user-read-email'
 
-    return redirect(url)
+  params = {
+     'response_type': 'code',
+     'client_id': client_id,
+     'scope': scope,
+     'redirect_uri': redirect_uri,
+     'state': state
+  }
+
+  return redirect('https://accounts.spotify.com/authorize?' + requests.compat.urlencode(params))
 
 
 @app.route("/callback")
@@ -34,29 +41,46 @@ def callback():
     else:
        res = exchange_code_for_token(code)
        print(res)
+
        refresh_token = res['refresh_token']
+       playlists = get_playlists()
+       print(playlists)
+
        return refresh_token
 
 def exchange_code_for_token(code):
     url = 'https://accounts.spotify.com/api/token'
-
-    params = {
-        'code': code,
-        'redirect_uri': redirect_uri,
-        'grant_type': 'authorization_code'
-    }
-
     headers = {
-        'content-type': 'application/x-www-form-urlencoded',
-        'Authorizaiton': 'Basic ' + base64.b64encode(f'{client_id}:{client_secret}'.encode()).decode()
+       'content-type': 'application/x-www-form-urlencoded',
+       'Authorization': 'Basic ' + base64.b64encode(f'{client_id}:{client_secret}'.encode()).decode()
     }
-
-    response = requests.post(url, params=params, headers=headers)
+    params = {
+       'code': code,
+       'redirect_uri': redirect_uri,
+       'grant_type': 'authorization_code'
+    }
+    
+    response = requests.post(url, headers=headers, params=params)
     return response.json()
 
-if __name__=="__main__":
-   app.run(debug=True, host="0.0.0.0", port="8888")
+def get_playlists():
+    access_token = my_secrets.get_newToken(refresh_token)
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
 
+    response = requests.get('https://api.spotify.com/v1/me', headers = headers)
+    res = response.json()
+    user_id = res['id']
+    url = f'https://api.spotify.com/v1/users/{user_id}/playlists'
 
-def get_playlist():
-   access_token = my_secrets.get_newToken(refresh_token)
+    
+    response = requests.get(url, headers = headers)
+    res = response.json()
+    playlists = []
+    for item in res['items']:
+        playlists.append({'name':item['name'], 'id': item['id']}) 
+    return playlists
+
+if __name__ == '__main__':
+   app.run(debug = True, host = '0.0.0.0', port=8888)

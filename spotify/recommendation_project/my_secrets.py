@@ -47,6 +47,7 @@ def get_newToken(refreshToken):
 
     # Making the POST request
     response = requests.post(url, headers=headers, data=data)
+    print(response)
     res = response.json()
     # Print the response text (or process it in other ways)
     return res["access_token"]
