@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Your Playlists{% endblock %}
+{% block head %}
+    {{ super() }}
+    <style>
+        .list-group-item {
+            background-color: #f8f9fa; /* Light grey background */
+            border-radius: 5px; /* Rounded borders for each item */
+            margin-bottom: 10px; /* Space between items */
+            padding: 20px; /* Padding inside each item */
+        }
+        .recommendations-list ul {
+            padding-left: 20px; /* Indent for list of recommendations */
+        }
+        .recommendations-list li {
+            margin-bottom: 5px; /* Space between recommendation items */
+            font-size: 18px; /* Larger font for readability */
+        }
+        .spotify-link {
+            text-decoration: none;
+            color: #1DB954; /* Spotify green */
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>My Playlists</h2>
+    <ul class="list-group">
+        {% for playlist in playlists %}
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-weight: bold;">{{playlist.name}}</span>
+                <button onclick="getRecommendations('{{playlist.id}}')" class="btn btn-info">
+                    Get Recommendations
+                </button>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    function getRecommendations(playlistId){
+        fetch('/recommend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `playlist_id=${playlistId}`
+        })
+
+    }
+</script>
+{% endblock %}

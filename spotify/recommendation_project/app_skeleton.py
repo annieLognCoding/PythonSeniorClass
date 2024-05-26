@@ -15,6 +15,10 @@ def generate_random_string(length):
     return ''.join(random.choice(string.ascii_letters+string.digits) for _ in range(length))
 
 @app.route("/")
+def home():
+    return render_template('index.html')
+
+@app.route("/", methods=['POST'])
 def get_access():
 
   state = generate_random_string(16)
@@ -41,11 +45,7 @@ def callback():
     else:
         res = exchange_code_for_token(code)
         refresh_token = res['refresh_token']
-        audio_features = get_audio_features()
-        averages = analyze_features(audio_features)
-        tags = derive_tags(averages)
-        recommendations = get_recommendation(tags)
-        return recommendations
+        return redirect('/playlists')
 
 def exchange_code_for_token(code):
     url = 'https://accounts.spotify.com/api/token'
@@ -61,6 +61,15 @@ def exchange_code_for_token(code):
     
     response = requests.post(url, headers=headers, params=params)
     return response.json()
+
+@app.route('/playlists')
+def playlist_page():
+    try:
+        playlists = get_playlists()
+        return render_template('playlists_starter.html', playlists=playlists)
+    except Exception as e:
+        return redirect('/')
+
 
 def get_playlists():
     access_token = my_secrets.get_newToken(refresh_token)
@@ -81,22 +90,28 @@ def get_playlists():
         playlists.append({'name': item['name'], 'id': item['id']})
     return playlists
 
-def get_first_playlist_tracks():
+@app.route('/recommend', methods=['POST'])
+def recommend_songs():
+    playlist_id = request.form['playlist_id']
+    tracks = get_playlist_tracks(playlist_id)
+    audio_features = get_audio_features(tracks)
+    averages = analyze_features(audio_features)
+    tags = derive_tags(averages)
+    recommendation = get_recommendation(tags)
+    print(recommendation)
+    return recommendation
+
+
+def get_playlist_tracks(playlist_id):
     try:
         global refresh_token
         token = my_secrets.get_newToken(refresh_token)
         headers = {
             "Authorization": f"Bearer {token}"
         }
-        
-        # Retrieve the user's playlists
-        playlists = get_playlists()
-        
-        # Extract the ID of the first playlist
-        first_playlist_id = playlists[0]["id"]
 
         # Fetch the tracks from the first playlist
-        url = f'https://api.spotify.com/v1/playlists/{first_playlist_id}/tracks'
+        url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
         response = requests.get(url, headers = headers)
         res = response.json()
         tracks = []
@@ -107,15 +122,13 @@ def get_first_playlist_tracks():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-def get_audio_features():
+def get_audio_features(tracks):
     try:
         global refresh_token
         token = my_secrets.get_newToken(refresh_token)
         headers = {
             "Authorization": f"Bearer {token}"
         }
-
-        tracks = get_first_playlist_tracks()
         ids = ''
         for track in tracks:
             id = track['id']
